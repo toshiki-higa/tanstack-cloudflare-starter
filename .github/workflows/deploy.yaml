@@ -1,0 +1,128 @@
+name: deploy
+
+# Reusable Alchemy deploy workflow. Restores the target stage's encrypted
+# local state before deployment and persists it afterwards, including when
+# deployment fails so Alchemy can recover interrupted resource transitions.
+#
+# The encrypted .env file is the source of truth for Cloudflare credentials
+# and a base64-encoded rclone config containing a crypt remote named `state`.
+# Each GitHub Environment supplies only its Dotenvx private key.
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Target environment
+        required: true
+        type: choice
+        default: production
+        options:
+          - production
+          - staging
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+    secrets:
+      DOTENV_PRIVATE_KEY:
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-${{ inputs.environment }}
+  cancel-in-progress: false
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  deploy:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    environment:
+      name: ${{ inputs.environment }}
+    env:
+      ALCHEMY_STACK: TanStackStartSolidHono
+      DEPLOY_ENVIRONMENT: ${{ inputs.environment }}
+      DOTENV_PRIVATE_KEY_PRODUCTION: ${{ inputs.environment == 'production' && secrets.DOTENV_PRIVATE_KEY || '' }}
+      DOTENV_PRIVATE_KEY_STAGING: ${{ inputs.environment == 'staging' && secrets.DOTENV_PRIVATE_KEY || '' }}
+      ENV_FILE: .env.${{ inputs.environment }}
+    steps:
+      - name: Validate environment
+        run: |
+          case "$DEPLOY_ENVIRONMENT" in
+            staging | production) ;;
+            *)
+              echo "Unsupported deployment environment: $DEPLOY_ENVIRONMENT" >&2
+              exit 1
+              ;;
+          esac
+
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@2126ae7fc54c9df00dd18f7f18754393182c73cd # v31.9.1
+
+      - name: Install dependencies
+        run: 'nix develop .#ci --command pnpm install --frozen-lockfile'
+
+      - name: Configure encrypted state remote
+        run: |
+          install -d -m 700 "$HOME/.config/rclone"
+          nix develop .#ci --command pnpm exec dotenvx run -f "$ENV_FILE" --quiet -- \
+            node -e 'process.stdout.write(Buffer.from(process.env.RCLONE_CONFIG_BASE64 ?? "", "base64"))' \
+            > "$HOME/.config/rclone/rclone.conf"
+          chmod 600 "$HOME/.config/rclone/rclone.conf"
+
+          remote_type="$(nix develop .#ci --command rclone config show state | awk -F' = ' '$1 == "type" { print $2 }')"
+          if [[ "$remote_type" != 'crypt' ]]; then
+            echo 'The rclone remote named state must use crypt.' >&2
+            exit 1
+          fi
+
+      - name: Restore Alchemy state
+        id: restore
+        env:
+          STATE_DIR: .alchemy/state/${{ env.ALCHEMY_STACK }}/${{ env.DEPLOY_ENVIRONMENT }}
+          STATE_REMOTE: state:${{ github.repository }}/${{ env.ALCHEMY_STACK }}/${{ env.DEPLOY_ENVIRONMENT }}
+        run: |
+          mkdir -p "$STATE_DIR"
+          nix develop .#ci --command rclone copy "$STATE_REMOTE" "$STATE_DIR" --checksum
+
+      - name: Deploy
+        id: deploy
+        run: |
+          case "$DEPLOY_ENVIRONMENT" in
+            staging) nix develop .#ci --command pnpm deploy:staging ;;
+            production) nix develop .#ci --command pnpm deploy ;;
+          esac
+
+      - name: Persist Alchemy state
+        id: persist
+        if: ${{ !cancelled() && steps.deploy.outcome != 'skipped' }}
+        env:
+          STATE_DIR: .alchemy/state/${{ env.ALCHEMY_STACK }}/${{ env.DEPLOY_ENVIRONMENT }}
+          STATE_REMOTE: state:${{ github.repository }}/${{ env.ALCHEMY_STACK }}/${{ env.DEPLOY_ENVIRONMENT }}
+        run: |
+          if [[ ! -d "$STATE_DIR" ]]; then
+            echo "Alchemy state directory is missing: $STATE_DIR" >&2
+            exit 1
+          fi
+          nix develop .#ci --command rclone sync "$STATE_DIR" "$STATE_REMOTE" --checksum
+
+      - name: Report deploy result
+        if: ${{ success() || failure() }}
+        run: |
+          echo '## Deploy result' >> "$GITHUB_STEP_SUMMARY"
+          echo "- Environment: \`$DEPLOY_ENVIRONMENT\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Commit: \`$GITHUB_SHA\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- State restore: \`${{ steps.restore.outcome }}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Deploy: \`${{ steps.deploy.outcome }}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- State persist: \`${{ steps.persist.outcome }}\`" >> "$GITHUB_STEP_SUMMARY"

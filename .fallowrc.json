@@ -1,0 +1,27 @@
+{
+  "$schema": "./node_modules/fallow/schema.json",
+  "framework": [
+    {
+      "name": "alchemy-v2",
+      "enablers": ["alchemy"],
+      "entryPoints": ["alchemy.run.ts"],
+      "entryPointRole": "support",
+      "toolingDependencies": ["@effect/platform-node", "alchemy", "effect"]
+    }
+  ],
+  "ignoreDependencies": [
+    "@tanstack/eslint-plugin-query",
+    "@tanstack/eslint-plugin-router",
+    "@tanstack/solid-router-devtools",
+    "@tanstack/solid-start",
+    "alchemy",
+    "effect",
+    "eslint-plugin-solid",
+    "portless",
+    "tailwindcss"
+  ],
+  "ignorePatterns": ["src/routeTree.gen.ts"],
+  "rules": {
+    "unused-catalog-entries": "off"
+  }
+}

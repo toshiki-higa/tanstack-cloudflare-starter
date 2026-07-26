@@ -1,0 +1,68 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions: {}
+
+defaults:
+  run:
+    shell: bash
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - name: Compute fetch depth
+        id: fetch-depth
+        if: ${{ !env.ACTRUN_LOCAL }}
+        env:
+          PR_COMMITS: ${{ github.event.pull_request.commits || 0 }}
+        run: echo "fetch-depth=$((PR_COMMITS + 1))" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: ${{ steps.fetch-depth.outputs.fetch-depth }}
+          persist-credentials: false
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@2126ae7fc54c9df00dd18f7f18754393182c73cd # v31.9.1
+
+      - name: Install dependencies
+        run: 'nix develop .#ci --command pnpm install --frozen-lockfile'
+
+      - name: Check
+        run: 'nix develop .#ci --command pnpm check'
+
+      - name: Test
+        run: 'nix develop .#ci --command pnpm test -- --run'
+
+      - name: Build
+        run: 'nix develop .#ci --command pnpm build'
+
+  timeline:
+    name: Show workflow timeline
+    if: ${{ (success() || failure()) }}
+    needs: ci
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      actions: read
+    steps:
+      - name: Echo
+        if: ${{ env.ACTRUN_LOCAL }}
+        run: echo '[Local] Workflow Timeline is not available'
+      - name: Show workflow timeline
+        if: ${{ !env.ACTRUN_LOCAL }}
+        uses: Kesin11/actions-timeline@a7eaabf426cdae26c3582c3fa674b897170dec8f # v2.2.4

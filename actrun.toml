@@ -1,0 +1,7 @@
+workspace_mode = "local"
+local_skip_actions = ["actions/checkout", "cachix/install-nix-action", "Kesin11/actions-timeline"]
+trust_actions = false
+nix_mode = "off"
+
+[lint]
+preset = "strict"
