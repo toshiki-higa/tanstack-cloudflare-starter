@@ -24,13 +24,20 @@
           default = pkgs.mkShell {
             packages = [
               actrun.packages.${system}.default
-              pkgs.nodejs_24
+              pkgs.nodejs_26
               pkgs.pnpm
             ];
+            shellHook = ''
+              # Install dependencies only if node_modules/.pnpm/lock.yaml is older than pnpm-lock.yaml
+              if [ ! -f node_modules/.pnpm/lock.yaml ] || [ pnpm-lock.yaml -nt node_modules/.pnpm/lock.yaml ]; then
+                echo "Installing dependencies..."
+                pnpm install --frozen-lockfile
+              fi
+            '';
           };
           ci = pkgs.mkShell {
             packages = [
-              pkgs.nodejs_24
+              pkgs.nodejs_26
               pkgs.pnpm
               pkgs.rclone
             ];

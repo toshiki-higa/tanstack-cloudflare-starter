@@ -6,7 +6,6 @@
 .alchemy
 
 # Tooling
-.envrc
 node_modules
 dist
 .tanstack
