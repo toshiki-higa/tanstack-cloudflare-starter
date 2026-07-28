@@ -1,11 +1,10 @@
 import { vValidator } from '@hono/valibot-validator';
-import type * as Cloudflare from 'alchemy/Cloudflare';
 import { Hono } from 'hono';
 import * as v from 'valibot';
 
-import type { Website } from '../alchemy.run.ts';
+import type { WebsiteEnv } from '../alchemy.run.ts';
 
-export type Bindings = Partial<Omit<Cloudflare.InferEnv<typeof Website>, 'ASSETS'>>;
+export interface Bindings extends Omit<WebsiteEnv, 'ASSETS'> {}
 
 const paramsSchema = v.object({
   id: v.pipe(v.string(), v.minLength(3)),

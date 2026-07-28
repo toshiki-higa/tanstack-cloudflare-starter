@@ -6,6 +6,11 @@ import { defineConfig } from 'vite-plus';
 export default defineConfig({
   resolve: { tsconfigPaths: true },
   plugins: [tanstackStart(), tailwindcss(), solid({ ssr: true })],
+  build: {
+    rolldownOptions: {
+      external: ['cloudflare:workers'],
+    },
+  },
   test: {
     environment: 'node',
     include: ['server/**/*.test.ts', 'src/**/*.test.ts'],

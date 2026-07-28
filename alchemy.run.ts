@@ -5,7 +5,7 @@ import * as Effect from 'effect/Effect';
 
 const WORKER_BASE_NAME = 'tanstack-cloudflare-starter';
 
-export const Website = Cloudflare.Website.Vite(
+export class Website extends Cloudflare.Website.Vite<Website>()(
   'Website',
   Effect.gen(function* () {
     const stage = yield* Alchemy.Stage;
@@ -20,12 +20,17 @@ export const Website = Cloudflare.Website.Vite(
         date: '2026-06-16',
         flags: ['nodejs_compat'],
       },
+      assets: {
+        runWorkerFirst: true,
+      },
       env: {
         HELLO: Config.redacted('HELLO'),
       },
     };
   }),
-);
+) {}
+
+export type WebsiteEnv = Cloudflare.InferEnv<typeof Website>;
 
 export default Alchemy.Stack(
   'TanStackStartSolidHono',

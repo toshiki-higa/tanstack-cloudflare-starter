@@ -1,8 +1,9 @@
 import { createFileRoute } from '@tanstack/solid-router';
 
 import { app } from '../../../server/index.ts';
+import { env } from '../../env.ts';
 
-const serve = ({ request }: { request: Request }) => app.fetch(request, process.env);
+const serve = ({ request }: { request: Request }) => app.fetch(request, env);
 
 export const Route = createFileRoute('/api/$')({
   server: {

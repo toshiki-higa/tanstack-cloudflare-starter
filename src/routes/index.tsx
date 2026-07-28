@@ -1,9 +1,10 @@
 import { createFileRoute, useRouter, useRouterState } from '@tanstack/solid-router';
 import { createServerFn } from '@tanstack/solid-start';
 
+import { env } from '../env.ts';
 import { fetchHomeData } from './-home.ts';
 
-const getHomeData = createServerFn({ method: 'GET' }).handler(() => fetchHomeData(process.env));
+const getHomeData = createServerFn({ method: 'GET' }).handler(() => fetchHomeData(env));
 
 export const Route = createFileRoute('/')({
   loader: () => getHomeData(),
