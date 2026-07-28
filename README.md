@@ -42,6 +42,8 @@ pnpm portless trust
   - staging
   - production
 
+- Create `DESIGN.md` from [pre-design-md](https://pre-design-md.dev/)
+
 ## Development
 
 Run dev server, then assign to https://<slug>.localhost:<port>.
