@@ -7,7 +7,7 @@
     "moduleResolution": "Bundler",
     "moduleDetection": "force",
     "jsx": "preserve",
-    "jsxImportSource": "solid-js",
+    "jsxImportSource": "@solidjs/web",
     "types": ["@cloudflare/workers-types", "vite/client", "node"],
     "allowImportingTsExtensions": true,
     "noEmit": true,

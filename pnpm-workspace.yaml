@@ -25,12 +25,13 @@ catalogMode: strict
 catalogs:
   app:
     '@hono/valibot-validator': 0.6.1
-    '@tanstack/solid-query': 5.102.5
-    '@tanstack/solid-router': 1.170.30
-    '@tanstack/solid-router-ssr-query': 1.167.1
-    '@tanstack/solid-start': 1.168.47
+    '@solidjs/web': 2.0.0-rc.3
+    '@tanstack/solid-query': 6.0.0-rc.0
+    '@tanstack/solid-router': 2.0.0-rc.2
+    '@tanstack/solid-router-ssr-query': 2.0.0-rc.2
+    '@tanstack/solid-start': 2.0.0-rc.2
     hono: 4.13.5
-    solid-js: 1.9.15
+    solid-js: 2.0.0-rc.3
     valibot: 1.4.2
   infra:
     '@effect/platform-node': 4.0.0-rc.112
@@ -46,14 +47,14 @@ catalogs:
     secretlint: 13.0.4
   tooling:
     '@dotenvx/dotenvx': 2.21.0
+    '@solidjs/vite-plugin': 3.0.0-next.34
     '@tailwindcss/vite': 4.3.3
-    '@tanstack/solid-router-devtools': 1.167.1
+    '@tanstack/solid-router-devtools': 2.0.0-rc.2
     portless: 0.15.6
     tailwindcss: 4.3.3
     typescript: 7.0.2
     vite: 8.1.5
     vite-bundle-visualizer: 1.2.1
-    vite-plugin-solid: 2.11.14
     vite-plus: &vite-plus 0.3.0
     vitest: 4.1.11
   types:
@@ -63,7 +64,9 @@ catalogs:
 packages: []
 
 overrides:
+  '@tanstack/query-core': 5.101.0
   vite: npm:@voidzero-dev/vite-plus-core@0.3.0
+  vite-plugin-solid: 3.0.0-next.27
   vitest: 4.1.11
 
 packageExtensions:
@@ -73,5 +76,6 @@ packageExtensions:
 
 peerDependencyRules:
   allowedVersions:
+    solid-js: 2.0.0-rc.3 # TanStack's Solid 2 RC dependencies retain stale Solid 1 peer ranges
     typescript: 7.0.2 # ESLint plugins work with the configured TypeScript prerelease
     vite: '*' # Vite+ core exposes Vite 8 under its own package version

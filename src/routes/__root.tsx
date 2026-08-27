@@ -1,8 +1,8 @@
+import { HydrationScript } from '@solidjs/web';
 import type { QueryClient } from '@tanstack/solid-query';
 import { HeadContent, Outlet, Scripts, createRootRouteWithContext } from '@tanstack/solid-router';
 import { TanStackRouterDevtools } from '@tanstack/solid-router-devtools';
-import { Show, Suspense } from 'solid-js';
-import { HydrationScript } from 'solid-js/web';
+import { Loading, Show } from 'solid-js';
 
 import styles from '../styles.css?url';
 
@@ -33,9 +33,9 @@ function RootDocument() {
         <HeadContent />
       </head>
       <body>
-        <Suspense>
+        <Loading>
           <Outlet />
-        </Suspense>
+        </Loading>
         <Show when={import.meta.env.DEV}>
           <TanStackRouterDevtools position="bottom-right" />
         </Show>

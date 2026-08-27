@@ -74,7 +74,7 @@ function HomeView(props: HomeViewProps) {
           class="rounded bg-black px-4 py-2 text-white transition hover:scale-105 active:scale-95 disabled:opacity-50"
           type="button"
           disabled={props.isFetching}
-          aria-busy={props.isFetching}
+          aria-busy={props.isFetching ? 'true' : 'false'}
           onClick={() => props.onReload()}
         >
           {props.isFetching ? '再読込中…' : '再読込'}

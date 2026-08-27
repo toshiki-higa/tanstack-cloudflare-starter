@@ -10,6 +10,7 @@
     }
   ],
   "ignoreDependencies": [
+    "@ls-lint/ls-lint",
     "@tanstack/eslint-plugin-query",
     "@tanstack/eslint-plugin-router",
     "@tanstack/solid-router-devtools",
@@ -19,6 +20,10 @@
     "eslint-plugin-solid",
     "portless",
     "tailwindcss"
+  ],
+  "ignoreDependencyOverrides": [
+    { "package": "@tanstack/query-core", "source": "pnpm-workspace.yaml" },
+    { "package": "vite-plugin-solid", "source": "pnpm-workspace.yaml" }
   ],
   "ignorePatterns": ["src/routeTree.gen.ts"],
   "rules": {
