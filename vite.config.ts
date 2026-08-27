@@ -88,7 +88,7 @@ export default defineConfig({
   },
   staged: {
     '*.{js,ts,tsx}': 'vp check --fix',
-    '*': 'env NODE_PATH=./node_modules secretlint --no-glob',
+    '*': ['env NODE_PATH=./node_modules secretlint --no-glob', 'ls-lint'],
     '.env{,.*}': [() => 'dotenvx precommit .', () => 'dotenvx validate --overload'],
     '.github/workflows/*.{yml,yaml}': 'actrun lint --strict',
   },

@@ -1,0 +1,28 @@
+ls:
+  src:
+    .dir: kebab-case
+    .css: kebab-case
+    .ts: camelCase
+    .tsx: camelCase
+
+  src/routes:
+    .dir: kebab-case
+    .ts: &route-name 'regex:-?[a-z0-9]+(-[a-z0-9]+)* | regex:\$'
+    .test.ts: *route-name
+    .tsx: *route-name
+
+  server:
+    .dir: kebab-case
+    .ts: camelCase
+    .test.ts: camelCase
+
+  public:
+    .dir: kebab-case
+    .svg: kebab-case
+
+ignore:
+  - node_modules
+  - dist
+  - .git
+  - src/routeTree.gen.ts
+  - src/routes/__root.tsx

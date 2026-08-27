@@ -30,6 +30,7 @@
     "@cloudflare/workers-types": "catalog:types",
     "@dotenvx/dotenvx": "catalog:tooling",
     "@effect/platform-node": "catalog:infra",
+    "@ls-lint/ls-lint": "catalog:lint",
     "@secretlint/secretlint-rule-preset-recommend": "catalog:lint",
     "@tailwindcss/vite": "catalog:tooling",
     "@tanstack/eslint-plugin-query": "catalog:lint",
