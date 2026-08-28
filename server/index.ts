@@ -1,4 +1,4 @@
-import { vValidator } from '@hono/valibot-validator';
+import { sValidator } from '@hono/standard-validator';
 import { Hono } from 'hono';
 import * as v from 'valibot';
 
@@ -18,7 +18,7 @@ export const app = new Hono<{ Bindings: Bindings }>()
       helloConfigured: Boolean(c.env.HELLO),
     }),
   )
-  .get('/test/:id', vValidator('param', paramsSchema), (c) => {
+  .get('/test/:id', sValidator('param', paramsSchema), (c) => {
     const { id } = c.req.valid('param');
 
     return c.json({

@@ -24,7 +24,7 @@ catalogMode: strict
 
 catalogs:
   app:
-    '@hono/valibot-validator': 0.6.1
+    '@hono/standard-validator': 0.4.0
     '@solidjs/web': 2.0.0-rc.3
     '@tanstack/solid-query': 6.0.0-rc.0
     '@tanstack/solid-router': 2.0.0-rc.2

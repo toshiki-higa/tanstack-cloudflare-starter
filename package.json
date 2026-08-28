@@ -17,7 +17,7 @@
     "analyze:bundle": "vite-bundle-visualizer --sourcemap --template raw-data --output .tmp/bundle.json --open false"
   },
   "dependencies": {
-    "@hono/valibot-validator": "catalog:app",
+    "@hono/standard-validator": "catalog:app",
     "@solidjs/web": "catalog:app",
     "@tanstack/solid-query": "catalog:app",
     "@tanstack/solid-router": "catalog:app",
