@@ -11,6 +11,7 @@
     "types": ["@cloudflare/workers-types", "vite/client", "node"],
     "allowImportingTsExtensions": true,
     "noEmit": true,
+    "esModuleInterop": true,
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
     "erasableSyntaxOnly": true,
