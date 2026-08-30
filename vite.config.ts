@@ -14,6 +14,8 @@ export default defineConfig({
   test: {
     environment: 'node',
     include: ['server/**/*.test.ts', 'src/**/*.test.ts'],
+    reporters: ['agent'],
+    silent: 'passed-only',
   },
   lint: {
     categories: {
