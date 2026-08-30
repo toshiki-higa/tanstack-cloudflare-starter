@@ -91,7 +91,10 @@ export default defineConfig({
   staged: {
     '*.{js,ts,tsx}': 'vp check --fix',
     '*': ['secretlint --no-glob', 'ls-lint'],
-    '.env{,.*}': [() => 'dotenvx precommit .', () => 'dotenvx validate --overload'],
+    '.env{,.*}': [
+      () => 'dotenvx precommit .',
+      () => 'dotenvx validate -f .env.development --overload',
+    ],
     '.github/workflows/*.{yml,yaml}': 'actrun lint --strict',
   },
 });

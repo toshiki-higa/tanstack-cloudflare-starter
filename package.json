@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "prepare": "vp config --hooks-dir .vite-hooks --no-agent",
-    "dev": "dotenvx run -- portless app alchemy dev",
+    "dev": "dotenvx run -f .env.development -- portless app alchemy dev",
     "build": "vp build",
     "preview": "vp preview",
     "deploy": "dotenvx run -f .env.production -- alchemy deploy --stage production --yes",
