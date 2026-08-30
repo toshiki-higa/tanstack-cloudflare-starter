@@ -1,32 +1,14 @@
-import { sValidator } from '@hono/standard-validator';
 import { Hono } from 'hono';
-import * as v from 'valibot';
 
-import type { WebsiteEnv } from '../alchemy.run.ts';
+import { api } from './api/index.ts';
+import type { Bindings } from './env.ts';
 
-export interface Bindings extends Omit<WebsiteEnv, 'ASSETS'> {}
+type StartFetch = (request: Request) => Response | Promise<Response>;
 
-const paramsSchema = v.object({
-  id: v.pipe(v.string(), v.minLength(3)),
-});
+type Env = { Bindings: Bindings };
 
-export const app = new Hono<{ Bindings: Bindings }>()
-  .basePath('/api')
-  .get('/health', (c) => c.json({ ok: true }))
-  .get('/environment', (c) =>
-    c.json({
-      helloConfigured: Boolean(c.env.HELLO),
-    }),
-  )
-  .get('/test/:id', sValidator('param', paramsSchema), (c) => {
-    const { id } = c.req.valid('param');
-
-    return c.json({
-      id,
-      age: 20,
-      name: 'Ultra-man',
-    });
-  })
-  .notFound((c) => c.json({ message: 'Not Found' }, 404));
-
-export type App = typeof app;
+export const createApp = (startFetch: StartFetch) =>
+  new Hono<Env>()
+    .route('/api', api)
+    .all('/api/*', (c) => c.json({ message: 'Not Found' }, 404))
+    .all('*', (c) => startFetch(c.req.raw));

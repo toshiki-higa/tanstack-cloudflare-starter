@@ -1,45 +1,45 @@
-import { createFileRoute, useRouter, useRouterState } from '@tanstack/solid-router';
-import { createServerFn } from '@tanstack/solid-start';
+import { createQuery, queryOptions } from '@tanstack/solid-query';
+import { createFileRoute } from '@tanstack/solid-router';
+import { Show } from 'solid-js';
 
-import { env } from '../env.ts';
-import { fetchHomeData } from './-home.ts';
+import { apiClient } from '../api.ts';
 
-const getHomeData = createServerFn({ method: 'GET' }).handler(() => fetchHomeData(env));
+const testUserId = '1212121';
+
+const homeQueryOptions = queryOptions({
+  queryKey: ['home'],
+  staleTime: 30_000,
+  queryFn: async () => {
+    const [testUserResponse, environmentResponse] = await Promise.all([
+      apiClient.test[':id'].$get({ param: { id: testUserId } }),
+      apiClient.environment.$get(),
+    ]);
+
+    if (!testUserResponse.ok) {
+      throw new Error('API request failed');
+    }
+    if (!environmentResponse.ok) {
+      throw new Error('Environment status request failed');
+    }
+
+    const [testUser, environment] = await Promise.all([
+      testUserResponse.json(),
+      environmentResponse.json(),
+    ]);
+
+    return { environment, testUser };
+  },
+});
 
 export const Route = createFileRoute('/')({
-  loader: () => getHomeData(),
+  ssr: false,
+  loader: ({ context }) => context.queryClient.ensureQueryData(homeQueryOptions),
   component: Home,
 });
 
-type HomeData = Awaited<ReturnType<typeof getHomeData>>;
-
-type EnvironmentStatus = 'configured' | 'missing';
-
-interface HomeViewProps {
-  data: HomeData['testUser'];
-  environmentStatus: EnvironmentStatus;
-  isFetching: boolean;
-  onReload: () => void;
-}
-
 function Home() {
-  const data = Route.useLoaderData();
-  const router = useRouter();
-  const isFetching = useRouterState({ select: (state) => state.isLoading });
-  const environmentStatus = (): EnvironmentStatus =>
-    data().environment.helloConfigured ? 'configured' : 'missing';
+  const home = createQuery(() => homeQueryOptions);
 
-  return (
-    <HomeView
-      data={data().testUser}
-      environmentStatus={environmentStatus()}
-      isFetching={isFetching()}
-      onReload={() => void router.invalidate()}
-    />
-  );
-}
-
-function HomeView(props: HomeViewProps) {
   return (
     <main class="mx-auto max-w-xl p-8">
       <h1 class="text-2xl font-bold">TanStack Start + Solid + Hono</h1>
@@ -49,35 +49,38 @@ function HomeView(props: HomeViewProps) {
         <h2 id="api-title" class="text-lg font-semibold">
           API 接続
         </h2>
-        <dl class="my-4 divide-y">
-          <div class="flex justify-between py-2">
-            <dt>ユーザー ID</dt>
-            <dd>{props.data.id}</dd>
-          </div>
-          <div class="flex justify-between py-2">
-            <dt>名前</dt>
-            <dd>{props.data.name}</dd>
-          </div>
-          <div class="flex justify-between py-2">
-            <dt>年齢</dt>
-            <dd>{props.data.age}</dd>
-          </div>
-          <div class="flex justify-between py-2">
-            <dt>環境変数 HELLO</dt>
-            <dd aria-live="polite">
-              {props.environmentStatus === 'configured' ? '設定済み' : '未設定'}
-            </dd>
-          </div>
-        </dl>
+
+        <Show when={home.data}>
+          {(data) => (
+            <dl class="my-4 divide-y">
+              <div class="flex justify-between py-2">
+                <dt>ユーザー ID</dt>
+                <dd>{data().testUser.id}</dd>
+              </div>
+              <div class="flex justify-between py-2">
+                <dt>名前</dt>
+                <dd>{data().testUser.name}</dd>
+              </div>
+              <div class="flex justify-between py-2">
+                <dt>年齢</dt>
+                <dd>{data().testUser.age}</dd>
+              </div>
+              <div class="flex justify-between py-2">
+                <dt>環境変数 HELLO</dt>
+                <dd>{data().environment.helloConfigured ? '設定済み' : '未設定'}</dd>
+              </div>
+            </dl>
+          )}
+        </Show>
 
         <button
           class="rounded bg-black px-4 py-2 text-white transition hover:scale-105 active:scale-95 disabled:opacity-50"
           type="button"
-          disabled={props.isFetching}
-          aria-busy={props.isFetching ? 'true' : 'false'}
-          onClick={() => props.onReload()}
+          disabled={home.isFetching}
+          aria-busy={home.isFetching ? 'true' : 'false'}
+          onClick={() => void home.refetch()}
         >
-          {props.isFetching ? '再読込中…' : '再読込'}
+          {home.isFetching ? '再読込中…' : '再読込'}
         </button>
       </section>
     </main>
