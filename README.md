@@ -42,6 +42,23 @@ pnpm portless trust
   - staging
   - production
 
+```sh
+# Set session
+export BW_SESSION="$(bw unlock --raw)"
+
+# Pull via Bitwarden
+test -s .env.keys || bw get notes "$(gh repo view --json nameWithOwner -q .nameWithOwner)" > .env.keys
+
+# Push via Bitwarden
+name="$(gh repo view --json nameWithOwner -q .nameWithOwner)"
+id="$(bw get item "$name" | jq -r .id)"
+
+bw get item "$id" |
+  jq --rawfile notes .env.keys '.notes = $notes' |
+  bw encode |
+  bw edit item "$id" >/dev/null
+```
+
 - Create `DESIGN.md` from [pre-design-md](https://pre-design-md.dev/)
 
 ## Development
