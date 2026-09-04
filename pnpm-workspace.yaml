@@ -35,20 +35,20 @@ catalogs:
     valibot: 1.4.2
   infra:
     "@effect/platform-node": 4.0.0-rc.112
-    alchemy: 2.0.0-beta.74
+    alchemy: 2.0.0-beta.76
     effect: 4.0.0-rc.112
   lint:
     "@ls-lint/ls-lint": 2.3.1
-    "@secretlint/secretlint-rule-preset-recommend": 13.0.4
-    "@tanstack/eslint-plugin-query": 5.102.5
+    "@secretlint/secretlint-rule-preset-recommend": 13.0.5
+    "@tanstack/eslint-plugin-query": 5.102.8
     "@tanstack/eslint-plugin-router": 1.162.0
-    eslint-plugin-solid: 0.16.0
-    fallow: 3.18.0
-    secretlint: 13.0.4
+    eslint-plugin-solid: 0.17.0
+    fallow: 3.22.0
+    secretlint: 13.0.5
     ultracite: 7.10.7
   tooling:
-    "@dotenvx/dotenvx": 2.21.0
-    "@solidjs/vite-plugin": 3.0.0-next.34
+    "@dotenvx/dotenvx": 2.23.0
+    "@solidjs/vite-plugin": 3.0.0-next.38
     "@tailwindcss/vite": 4.3.3
     "@tanstack/solid-router-devtools": 2.0.0-rc.2
     portless: 0.15.6
@@ -59,8 +59,8 @@ catalogs:
     vite-plus: &vite-plus 0.3.0
     vitest: 4.1.11
   types:
-    "@cloudflare/workers-types": 5.20260826.1
-    "@types/node": 26.3.0
+    "@cloudflare/workers-types": 5.20260903.1
+    "@types/node": 26.4.1
 
 packages: []
 
