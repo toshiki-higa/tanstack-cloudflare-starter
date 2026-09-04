@@ -1,3 +1,5 @@
+import assert from "node:assert/strict";
+
 import solid from "@solidjs/vite-plugin";
 import tailwindcss from "@tailwindcss/vite";
 import router from "@tanstack/eslint-plugin-router";
@@ -9,6 +11,9 @@ import core from "ultracite/oxlint/core";
 import tanstack from "ultracite/oxlint/tanstack";
 import vitest from "ultracite/oxlint/vitest";
 import { defineConfig } from "vite-plus";
+
+// Narrow the type before configuring
+assert.ok(core.ignorePatterns, "Ultracite core must provide ignorePatterns");
 
 export default defineConfig({
   resolve: { tsconfigPaths: true },
@@ -26,7 +31,7 @@ export default defineConfig({
   },
   lint: {
     extends: [core, vitest, tanstack, antiSlop],
-    ignorePatterns: core.ignorePatterns ?? [],
+    ignorePatterns: [...core.ignorePatterns],
     jsPlugins: [
       { name: "solid", specifier: "eslint-plugin-solid" },
       {
