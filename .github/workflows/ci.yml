@@ -40,16 +40,16 @@ jobs:
         uses: cachix/install-nix-action@2126ae7fc54c9df00dd18f7f18754393182c73cd # v31.9.1
 
       - name: Install dependencies
-        run: 'nix develop .#ci --command pnpm install --frozen-lockfile'
+        run: "nix develop .#ci --command pnpm install --frozen-lockfile"
 
       - name: Check
-        run: 'nix develop .#ci --command pnpm check'
+        run: "nix develop .#ci --command pnpm check"
 
       - name: Test
-        run: 'nix develop .#ci --command pnpm test -- --run'
+        run: "nix develop .#ci --command pnpm test -- --run"
 
       - name: Build
-        run: 'nix develop .#ci --command pnpm build'
+        run: "nix develop .#ci --command pnpm build"
 
   timeline:
     name: Show workflow timeline

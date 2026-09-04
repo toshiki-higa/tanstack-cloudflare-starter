@@ -11,8 +11,8 @@
     "deploy:dry-run": "dotenvx run -f .env.production -- alchemy plan --stage production",
     "deploy:staging": "dotenvx run -f .env.staging -- alchemy deploy --stage staging --yes",
     "destroy:staging": "dotenvx run -f .env.staging -- alchemy destroy --stage staging",
-    "check": "vp check",
-    "check:fix": "vp check --fix",
+    "check": "vp lint && vp fmt --check",
+    "check:fix": "vp lint --fix && vp fmt",
     "test": "vp test",
     "analyze:bundle": "vite-bundle-visualizer --sourcemap --template raw-data --output .tmp/bundle.json --open false"
   },
@@ -47,6 +47,7 @@
     "secretlint": "catalog:lint",
     "tailwindcss": "catalog:tooling",
     "typescript": "catalog:tooling",
+    "ultracite": "catalog:lint",
     "vite": "catalog:tooling",
     "vite-bundle-visualizer": "catalog:tooling",
     "vite-plus": "catalog:tooling",

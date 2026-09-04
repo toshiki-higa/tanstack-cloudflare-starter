@@ -16,7 +16,7 @@ blockExoticSubdeps: true
 verifyDepsBeforeRun: warn # Warn instead of automatically installing before scripts
 
 configDependencies:
-  '@pnpm/pacquet': 0.11.12
+  "@pnpm/pacquet": 0.11.12
 
 saveExact: true
 enableGlobalVirtualStore: true
@@ -24,32 +24,33 @@ catalogMode: strict
 
 catalogs:
   app:
-    '@hono/standard-validator': 0.4.0
-    '@solidjs/web': 2.0.0-rc.3
-    '@tanstack/solid-query': 6.0.0-rc.0
-    '@tanstack/solid-router': 2.0.0-rc.2
-    '@tanstack/solid-router-ssr-query': 2.0.0-rc.2
-    '@tanstack/solid-start': 2.0.0-rc.2
+    "@hono/standard-validator": 0.4.0
+    "@solidjs/web": 2.0.0-rc.3
+    "@tanstack/solid-query": 6.0.0-rc.0
+    "@tanstack/solid-router": 2.0.0-rc.2
+    "@tanstack/solid-router-ssr-query": 2.0.0-rc.2
+    "@tanstack/solid-start": 2.0.0-rc.2
     hono: 4.13.5
     solid-js: 2.0.0-rc.3
     valibot: 1.4.2
   infra:
-    '@effect/platform-node': 4.0.0-rc.112
+    "@effect/platform-node": 4.0.0-rc.112
     alchemy: 2.0.0-beta.74
     effect: 4.0.0-rc.112
   lint:
-    '@ls-lint/ls-lint': 2.3.1
-    '@secretlint/secretlint-rule-preset-recommend': 13.0.4
-    '@tanstack/eslint-plugin-query': 5.102.5
-    '@tanstack/eslint-plugin-router': 1.162.0
+    "@ls-lint/ls-lint": 2.3.1
+    "@secretlint/secretlint-rule-preset-recommend": 13.0.4
+    "@tanstack/eslint-plugin-query": 5.102.5
+    "@tanstack/eslint-plugin-router": 1.162.0
     eslint-plugin-solid: 0.16.0
     fallow: 3.18.0
     secretlint: 13.0.4
+    ultracite: 7.10.7
   tooling:
-    '@dotenvx/dotenvx': 2.21.0
-    '@solidjs/vite-plugin': 3.0.0-next.34
-    '@tailwindcss/vite': 4.3.3
-    '@tanstack/solid-router-devtools': 2.0.0-rc.2
+    "@dotenvx/dotenvx": 2.21.0
+    "@solidjs/vite-plugin": 3.0.0-next.34
+    "@tailwindcss/vite": 4.3.3
+    "@tanstack/solid-router-devtools": 2.0.0-rc.2
     portless: 0.15.6
     tailwindcss: 4.3.3
     typescript: 7.0.2
@@ -58,19 +59,19 @@ catalogs:
     vite-plus: &vite-plus 0.3.0
     vitest: 4.1.11
   types:
-    '@cloudflare/workers-types': 5.20260826.1
-    '@types/node': 26.3.0
+    "@cloudflare/workers-types": 5.20260826.1
+    "@types/node": 26.3.0
 
 packages: []
 
 overrides:
-  '@tanstack/query-core': 5.101.0
+  "@tanstack/query-core": 5.101.0
   vite: npm:@voidzero-dev/vite-plus-core@0.3.0
   vite-plugin-solid: 3.0.0-next.27
   vitest: 4.1.11
 
 packageExtensions:
-  '@voidzero-dev/vite-plus-core@*':
+  "@voidzero-dev/vite-plus-core@*":
     dependencies:
       vite-plus: *vite-plus
 
@@ -78,4 +79,4 @@ peerDependencyRules:
   allowedVersions:
     solid-js: 2.0.0-rc.3 # TanStack's Solid 2 RC dependencies retain stale Solid 1 peer ranges
     typescript: 7.0.2 # ESLint plugins work with the configured TypeScript prerelease
-    vite: '*' # Vite+ core exposes Vite 8 under its own package version
+    vite: "*" # Vite+ core exposes Vite 8 under its own package version

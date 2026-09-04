@@ -1,11 +1,15 @@
-import * as cf from 'cloudflare:workers';
+import * as cf from "cloudflare:workers";
 
-import type { WebsiteEnv } from '../alchemy.run.ts';
+import type { WebsiteEnv } from "../alchemy.run.ts";
 
-export type Bindings = Omit<WebsiteEnv, 'ASSETS'>;
+export type Bindings = Omit<WebsiteEnv, "ASSETS">;
 
-export const env = new Proxy({} as Bindings, {
-  get(_, property) {
-    return cf.env[property as keyof typeof cf.env];
-  },
-});
+declare global {
+  // oxlint-disable-next-line typescript/no-namespace -- Cloudflare exposes an augmentable namespace for Worker bindings.
+  namespace Cloudflare {
+    // oxlint-disable-next-line typescript/no-empty-interface, typescript/no-empty-object-type -- Declaration merging connects Alchemy's generated bindings to cloudflare:workers.
+    interface Env extends Bindings {}
+  }
+}
+
+export const env: Bindings = cf.env;

@@ -74,32 +74,32 @@ pnpm dev
 The example calls Hono from the browser; for SSR data or server-only orchestration, keep SSR enabled and call Hono in-process from a Server Function using its typed client:
 
 ```tsx
-import { createFileRoute } from '@tanstack/solid-router';
-import { createServerFn } from '@tanstack/solid-start';
-import { hc } from 'hono/client';
+import { createFileRoute } from "@tanstack/solid-router";
+import { createServerFn } from "@tanstack/solid-start";
+import { hc } from "hono/client";
 
-import { api } from '../../server/api/index.ts';
-import type { Api } from '../../server/api/index.ts';
-import { env } from '../../server/env.ts';
+import { api } from "../../server/api/index.ts";
+import type { Api } from "../../server/api/index.ts";
+import { env } from "../../server/env.ts";
 
-const getEnvironment = createServerFn({ method: 'GET' }).handler(async () => {
-  const client = hc<Api>('http://internal', {
+const getEnvironment = createServerFn({ method: "GET" }).handler(async () => {
+  const client = hc<Api>("http://internal", {
     fetch: (input, init) => api.request(input, init, env),
   });
   const response = await client.environment.$get();
 
-  if (!response.ok) throw new Error('API request failed');
+  if (!response.ok) throw new Error("API request failed");
   return response.json();
 });
 
-export const Route = createFileRoute('/settings')({
+export const Route = createFileRoute("/settings")({
   loader: () => getEnvironment(),
   component: Settings,
 });
 
 function Settings() {
   const data = Route.useLoaderData();
-  return <p>{data().helloConfigured ? 'Configured' : 'Missing'}</p>;
+  return <p>{data().helloConfigured ? "Configured" : "Missing"}</p>;
 }
 ```
 

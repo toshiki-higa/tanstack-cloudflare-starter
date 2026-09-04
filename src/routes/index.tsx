@@ -1,25 +1,25 @@
-import { createQuery, queryOptions } from '@tanstack/solid-query';
-import { createFileRoute } from '@tanstack/solid-router';
-import { Show } from 'solid-js';
+import { createQuery, queryOptions } from "@tanstack/solid-query";
+import { createFileRoute } from "@tanstack/solid-router";
+import { Show } from "solid-js";
 
-import { apiClient } from '../api.ts';
+import { apiClient } from "../api.ts";
 
-const testUserId = '1212121';
+const testUserId = "1212121";
 
 const homeQueryOptions = queryOptions({
-  queryKey: ['home'],
+  queryKey: ["home"],
   staleTime: 30_000,
   queryFn: async () => {
     const [testUserResponse, environmentResponse] = await Promise.all([
-      apiClient.test[':id'].$get({ param: { id: testUserId } }),
+      apiClient.test[":id"].$get({ param: { id: testUserId } }),
       apiClient.environment.$get(),
     ]);
 
     if (!testUserResponse.ok) {
-      throw new Error('API request failed');
+      throw new Error("API request failed");
     }
     if (!environmentResponse.ok) {
-      throw new Error('Environment status request failed');
+      throw new Error("Environment status request failed");
     }
 
     const [testUser, environment] = await Promise.all([
@@ -31,13 +31,7 @@ const homeQueryOptions = queryOptions({
   },
 });
 
-export const Route = createFileRoute('/')({
-  ssr: false,
-  loader: ({ context }) => context.queryClient.ensureQueryData(homeQueryOptions),
-  component: Home,
-});
-
-function Home() {
+const Home = () => {
   const home = createQuery(() => homeQueryOptions);
 
   return (
@@ -67,7 +61,9 @@ function Home() {
               </div>
               <div class="flex justify-between py-2">
                 <dt>環境変数 HELLO</dt>
-                <dd>{data().environment.helloConfigured ? '設定済み' : '未設定'}</dd>
+                <dd>
+                  {data().environment.helloConfigured ? "設定済み" : "未設定"}
+                </dd>
               </div>
             </dl>
           )}
@@ -77,12 +73,21 @@ function Home() {
           class="rounded bg-black px-4 py-2 text-white transition hover:scale-105 active:scale-95 disabled:opacity-50"
           type="button"
           disabled={home.isFetching}
-          aria-busy={home.isFetching ? 'true' : 'false'}
-          onClick={() => void home.refetch()}
+          aria-busy={home.isFetching ? "true" : "false"}
+          onClick={() => {
+            void home.refetch();
+          }}
         >
-          {home.isFetching ? '再読込中…' : '再読込'}
+          {home.isFetching ? "再読込中…" : "再読込"}
         </button>
       </section>
     </main>
   );
-}
+};
+
+export const Route = createFileRoute("/")({
+  ssr: false,
+  loader: async ({ context }) =>
+    await context.queryClient.ensureQueryData(homeQueryOptions),
+  component: Home,
+});
