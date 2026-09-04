@@ -17,7 +17,18 @@ assert.ok(core.ignorePatterns, "Ultracite core must provide ignorePatterns");
 
 export default defineConfig({
   resolve: { tsconfigPaths: true },
-  plugins: [tanstackStart(), tailwindcss(), solid({ ssr: true })],
+  plugins: [
+    tanstackStart({
+      importProtection: {
+        behavior: "error",
+        client: {
+          files: ["**/*.server.*", "**/server/**"],
+        },
+      },
+    }),
+    tailwindcss(),
+    solid({ ssr: true }),
+  ],
   build: {
     rolldownOptions: {
       external: ["cloudflare:workers"],
