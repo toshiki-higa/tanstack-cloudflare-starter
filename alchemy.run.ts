@@ -3,7 +3,11 @@ import * as Cloudflare from "alchemy/Cloudflare";
 import * as Config from "effect/Config";
 import * as Effect from "effect/Effect";
 
-const WORKER_BASE_NAME = "tanstack-cloudflare-starter";
+export const cloudflareConfig = {
+  workerName: "tanstack-cloudflare-starter",
+  compatibilityDate: "2026-08-04",
+  compatibilityFlags: ["nodejs_compat"],
+};
 
 export class Website extends Cloudflare.Website.Vite<Website>()(
   "Website",
@@ -11,14 +15,14 @@ export class Website extends Cloudflare.Website.Vite<Website>()(
     const stage = yield* Alchemy.Stage;
 
     return {
-      name: `${WORKER_BASE_NAME}-${stage}`,
+      name: `${cloudflareConfig.workerName}-${stage}`,
       dev: {
         port: Number(process.env["PORT"]),
         strictPort: true,
       },
       compatibility: {
-        date: "2026-06-16",
-        flags: ["nodejs_compat"],
+        date: cloudflareConfig.compatibilityDate,
+        flags: cloudflareConfig.compatibilityFlags,
       },
       assets: {
         runWorkerFirst: true,

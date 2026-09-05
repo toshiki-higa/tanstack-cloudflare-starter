@@ -28,6 +28,7 @@
     "valibot": "catalog:app"
   },
   "devDependencies": {
+    "@cloudflare/vitest-pool-workers": "catalog:testing",
     "@cloudflare/workers-types": "catalog:types",
     "@dotenvx/dotenvx": "catalog:tooling",
     "@effect/platform-node": "catalog:infra",

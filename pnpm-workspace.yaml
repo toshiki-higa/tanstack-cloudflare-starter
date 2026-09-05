@@ -46,6 +46,8 @@ catalogs:
     fallow: 3.22.0
     secretlint: 13.0.5
     ultracite: 7.10.7
+  testing:
+    "@cloudflare/vitest-pool-workers": 0.22.0
   tooling:
     "@dotenvx/dotenvx": 2.23.0
     "@solidjs/vite-plugin": 3.0.0-next.38

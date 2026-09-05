@@ -10,7 +10,9 @@ import antiSlop from "ultracite/oxlint/anti-slop";
 import core from "ultracite/oxlint/core";
 import tanstack from "ultracite/oxlint/tanstack";
 import vitest from "ultracite/oxlint/vitest";
-import { defineConfig } from "vite-plus";
+import { defineConfig, lazyPlugins, runnerImport } from "vite-plus";
+
+import type * as alchemy from "./alchemy.run.ts";
 
 // Narrow the type before configuring
 assert.ok(core.ignorePatterns, "Ultracite core must provide ignorePatterns");
@@ -36,7 +38,41 @@ export default defineConfig({
   },
   test: {
     environment: "node",
-    include: ["server/**/*.test.ts", "src/**/*.test.ts"],
+    projects: [
+      {
+        test: {
+          name: "node",
+          environment: "node",
+          include: ["src/**/*.test.ts", "server/**/*.test.ts"],
+          exclude: ["**/*.cf.test.ts"],
+        },
+      },
+      {
+        plugins: [
+          lazyPlugins(async () => {
+            const { cloudflareTest } =
+              await import("@cloudflare/vitest-pool-workers");
+            // Workaround: Keep these imports out of the config bundle.
+            const {
+              module: { cloudflareConfig },
+            } = await runnerImport<typeof alchemy>("./alchemy.run.ts");
+
+            return [
+              cloudflareTest({
+                miniflare: {
+                  compatibilityDate: cloudflareConfig.compatibilityDate,
+                  compatibilityFlags: cloudflareConfig.compatibilityFlags,
+                },
+              }),
+            ];
+          }),
+        ],
+        test: {
+          name: "cloudflare",
+          include: ["server/**/*.cf.test.ts"],
+        },
+      },
+    ],
     reporters: ["agent"],
     silent: "passed-only",
   },
@@ -112,7 +148,7 @@ export default defineConfig({
   },
   fmt: ultraciteFmt,
   staged: {
-    "*.{js,ts,tsx}": "vp check --fix",
+    "*.{js,ts,tsx}": ["vp check --fix", "vp test related"],
     "*": ["secretlint --no-glob", "ls-lint"],
     ".env{,.*}": [
       () => "dotenvx precommit .",
