@@ -148,8 +148,12 @@ export default defineConfig({
   },
   fmt: ultraciteFmt,
   staged: {
-    "*.{js,ts,tsx}": ["vp check --fix", "vp test related"],
-    "*": ["secretlint --no-glob", "ls-lint"],
+    "*.{js,ts,tsx}": ["vp check", "vp test related"],
+    "*": [
+      "secretlint --no-glob",
+      "ls-lint",
+      () => "fallow audit --base HEAD --format json --quiet",
+    ],
     ".env{,.*}": [
       () => "dotenvx precommit .",
       () => "dotenvx validate -f .env.development --overload",
