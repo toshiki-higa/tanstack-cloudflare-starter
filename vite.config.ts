@@ -154,7 +154,7 @@ export default defineConfig({
     ],
     ".env{,.*}": [
       () => "dotenvx precommit .",
-      () => "dotenvx validate -f .env.development --overload",
+      "dotenvx validate --overload -fk . -f",
     ],
     ".github/workflows/*.{yml,yaml}": "actrun lint --strict",
   },
