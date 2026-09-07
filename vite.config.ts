@@ -142,9 +142,6 @@ export default defineConfig({
       "anti-slop/no-conditional-empty-object-spread": "off",
       "anti-slop/no-shape-in-symbol-names": "off",
       "anti-slop/no-unknown-parameters": "off",
-
-      // Conflicts with anti-slop/no-reflect-apply (Fix for >7.10.7)
-      "unicorn/prefer-reflect-apply": "off",
     },
   },
   fmt: ultraciteFmt,
