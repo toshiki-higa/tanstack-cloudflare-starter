@@ -32,6 +32,7 @@ export default defineConfig({
     solid({ ssr: true }),
   ],
   build: {
+    minify: true,
     rolldownOptions: {
       external: ["cloudflare:workers"],
     },
