@@ -34,6 +34,7 @@
     "@effect/platform-node": "catalog:infra",
     "@ls-lint/ls-lint": "catalog:lint",
     "@secretlint/secretlint-rule-preset-recommend": "catalog:lint",
+    "@shadcn/lint": "catalog:lint",
     "@solidjs/vite-plugin": "catalog:tooling",
     "@tailwindcss/vite": "catalog:tooling",
     "@tanstack/eslint-plugin-query": "catalog:lint",

@@ -8,6 +8,7 @@ import solidV2 from "eslint-plugin-solid/configs/v2";
 import ultraciteFmt from "ultracite/oxfmt";
 import antiSlop from "ultracite/oxlint/anti-slop";
 import core from "ultracite/oxlint/core";
+import shadcn from "ultracite/oxlint/shadcn";
 import tanstack from "ultracite/oxlint/tanstack";
 import vitest from "ultracite/oxlint/vitest";
 import { defineConfig, lazyPlugins, runnerImport } from "vite-plus";
@@ -78,9 +79,10 @@ export default defineConfig({
     silent: "passed-only",
   },
   lint: {
-    extends: [core, vitest, tanstack, antiSlop],
+    extends: [core, vitest, tanstack, antiSlop, shadcn],
     ignorePatterns: [...core.ignorePatterns],
     jsPlugins: [
+      { name: "shadcn", specifier: "@shadcn/lint" },
       { name: "solid", specifier: "eslint-plugin-solid" },
       {
         name: "@tanstack/query",

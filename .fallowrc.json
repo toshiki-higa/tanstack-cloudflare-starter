@@ -11,6 +11,7 @@
   ],
   "ignoreDependencies": [
     "@ls-lint/ls-lint",
+    "@shadcn/lint",
     "@tanstack/eslint-plugin-query",
     "@tanstack/eslint-plugin-router",
     "@tanstack/solid-router-devtools",
