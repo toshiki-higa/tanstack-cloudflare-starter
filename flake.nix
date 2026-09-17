@@ -3,10 +3,11 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    multiverse.url = "github:fzakaria/nixpkgs-multiverse";
     actrun.url = "github:mizchi/actrun/v0.30.1";
   };
 
-  outputs = { actrun, nixpkgs, ... }:
+  outputs = { actrun, multiverse, nixpkgs, ... }:
     let
       systems = [
         "aarch64-darwin"
@@ -19,13 +20,14 @@
       devShells = forAllSystems (system:
         let
           pkgs = import nixpkgs { inherit system; };
+          pkgs-multiverse = multiverse.multiverse.${system}.versions;
         in
         {
           default = pkgs.mkShell {
             packages = [
               actrun.packages.${system}.default
-              pkgs.nodejs_26
-              pkgs.pnpm
+              pkgs-multiverse.nodejs_26."26.8.1"
+              pkgs-multiverse.pnpm_12."12.3.4"
             ];
             shellHook = ''
               # Resolve project-local bins/modules for pnpm's global virtual store.
@@ -40,8 +42,8 @@
           };
           ci = pkgs.mkShell {
             packages = [
-              pkgs.nodejs_26
-              pkgs.pnpm
+              pkgs-multiverse.nodejs_26."26.8.1"
+              pkgs-multiverse.pnpm_12."12.3.4"
               pkgs.rclone
             ];
           };

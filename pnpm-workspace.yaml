@@ -15,9 +15,6 @@ minimumReleaseAgeStrict: true
 blockExoticSubdeps: true
 verifyDepsBeforeRun: warn # Warn instead of automatically installing before scripts
 
-configDependencies:
-  "@pnpm/pacquet": 0.11.12
-
 saveExact: true
 enableGlobalVirtualStore: true
 catalogMode: strict
@@ -35,7 +32,7 @@ catalogs:
     valibot: 1.4.2
   infra:
     "@effect/platform-node": 4.0.0-rc.112
-    alchemy: 2.0.0-beta.76
+    alchemy: 2.0.0-beta.77
     effect: 4.0.0-rc.112
   lint:
     "@ls-lint/ls-lint": 2.3.1
@@ -67,6 +64,10 @@ catalogs:
 packages: []
 
 overrides:
+  "@effect/platform-node-shared": "4.0.0-rc.112" # Lockstep across the Effect family (alchemy targets rc.112)
+  "@effect/sql-d1": "4.0.0-rc.112"
+  "@effect/sql-sqlite-do": "4.0.0-rc.112"
+  "@effect/vitest": "4.0.0-rc.112"
   "@tanstack/query-core": 5.101.0
   vite: npm:@voidzero-dev/vite-plus-core@0.3.0
   vite-plugin-solid: 3.0.0-next.27

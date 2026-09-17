@@ -53,6 +53,5 @@
     "vite-bundle-visualizer": "catalog:tooling",
     "vite-plus": "catalog:tooling",
     "vitest": "catalog:tooling"
-  },
-  "packageManager": "pnpm@11.15.0"
+  }
 }
