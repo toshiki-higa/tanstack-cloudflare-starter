@@ -1,4 +1,4 @@
-import { createQuery, queryOptions } from "@tanstack/solid-query";
+import { queryOptions, useQuery } from "@tanstack/solid-query";
 import { createFileRoute } from "@tanstack/solid-router";
 import { Show } from "solid-js";
 
@@ -32,7 +32,7 @@ const homeQueryOptions = queryOptions({
 });
 
 const Home = () => {
-  const home = createQuery(() => homeQueryOptions);
+  const home = useQuery(() => homeQueryOptions);
 
   return (
     <main class="mx-auto max-w-xl p-8">
