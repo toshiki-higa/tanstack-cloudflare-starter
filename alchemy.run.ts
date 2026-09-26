@@ -28,7 +28,7 @@ export class Website extends Cloudflare.Website.Vite<Website>()(
         runWorkerFirst: true,
       },
       env: {
-        HELLO: Config.redacted("HELLO"),
+        HELLO: Config.Redacted("HELLO"),
       },
     };
   })

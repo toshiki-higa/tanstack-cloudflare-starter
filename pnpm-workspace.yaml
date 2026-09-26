@@ -22,55 +22,55 @@ catalogMode: strict
 catalogs:
   app:
     "@hono/standard-validator": 0.4.0
-    "@solidjs/web": 2.0.0-rc.8
-    "@tanstack/solid-query": 6.0.0-rc.3
-    "@tanstack/solid-router": 2.0.0-rc.7
-    "@tanstack/solid-router-ssr-query": 2.0.0-rc.5
-    "@tanstack/solid-start": 2.0.0-rc.7
-    hono: 4.13.8
-    solid-js: 2.0.0-rc.8
+    "@solidjs/web": 2.0.0-rc.9
+    "@tanstack/solid-query": 6.0.0-rc.4
+    "@tanstack/solid-router": 2.0.0-rc.8
+    "@tanstack/solid-router-ssr-query": 2.0.0-rc.6
+    "@tanstack/solid-start": 2.0.0-rc.8
+    hono: 4.13.9
+    solid-js: 2.0.0-rc.9
     valibot: 1.5.0
   infra:
-    "@effect/platform-node": 4.0.0-rc.112
-    alchemy: 2.0.0-beta.77
-    effect: 4.0.0-rc.112
+    "@effect/platform-node": 4.0.0-rc.117
+    alchemy: 2.0.0-beta.79
+    effect: 4.0.0-rc.117
   lint:
     "@ls-lint/ls-lint": 2.3.1
-    "@secretlint/secretlint-rule-preset-recommend": 13.0.5
-    "@shadcn/lint": 0.1.0
-    "@tanstack/eslint-plugin-query": 5.102.8
+    "@secretlint/secretlint-rule-preset-recommend": 13.0.6
+    "@shadcn/lint": 0.2.0
+    "@tanstack/eslint-plugin-query": 5.103.2
     "@tanstack/eslint-plugin-router": 1.162.0
     eslint-plugin-solid: 0.18.0
-    fallow: 3.26.0
-    secretlint: 13.0.5
+    fallow: 3.28.0
+    secretlint: 13.0.6
     ultracite: 7.12.0
   testing:
     "@cloudflare/vitest-pool-workers": 0.22.0
   tooling:
-    "@dotenvx/dotenvx": 2.26.1
-    "@solidjs/vite-plugin": 3.0.0-next.43
+    "@dotenvx/dotenvx": 2.30.0
+    "@solidjs/vite-plugin": 3.0.0-next.44
     "@tailwindcss/vite": 4.3.3
-    "@tanstack/solid-router-devtools": 2.0.0-rc.5
+    "@tanstack/solid-router-devtools": 2.0.0-rc.6
     portless: 0.15.6
     tailwindcss: 4.3.3
     typescript: 7.0.2
     vite: 8.3.0
     vite-bundle-visualizer: 1.2.1
-    vite-plus: &vite-plus 0.3.2
+    vite-plus: &vite-plus 0.3.3
     vitest: 4.1.11
   types:
-    "@cloudflare/workers-types": 5.20260916.1
-    "@types/node": 26.4.1
+    "@cloudflare/workers-types": 5.20260925.1
+    "@types/node": 26.6.2
 
 packages: []
 
 overrides:
-  "@effect/platform-node-shared": "4.0.0-rc.112" # Lockstep across the Effect family (alchemy targets rc.112)
-  "@effect/sql-d1": "4.0.0-rc.112"
-  "@effect/sql-sqlite-do": "4.0.0-rc.112"
-  "@effect/vitest": "4.0.0-rc.112"
+  "@effect/platform-node-shared": "4.0.0-rc.117" # Lockstep across the Effect family (alchemy beta.79 targets rc.115)
+  "@effect/sql-d1": "4.0.0-rc.117"
+  "@effect/sql-sqlite-do": "4.0.0-rc.117"
+  "@effect/vitest": "4.0.0-rc.117"
   "@tanstack/query-core": 5.101.4
-  vite: npm:@voidzero-dev/vite-plus-core@0.3.2
+  vite: npm:@voidzero-dev/vite-plus-core@0.3.3
   vite-plugin-solid: 3.0.0-next.27
   vitest: 4.1.11
 
@@ -81,6 +81,6 @@ packageExtensions:
 
 peerDependencyRules:
   allowedVersions:
-    solid-js: 2.0.0-rc.8 # Solid ecosystem dependencies retain stale Solid 1 peer ranges
+    solid-js: 2.0.0-rc.9 # Solid ecosystem dependencies retain stale Solid 1 peer ranges
     typescript: 7.0.2 # ESLint plugins work with the configured TypeScript prerelease
     vite: "*" # Vite+ core exposes Vite 8 under its own package version
