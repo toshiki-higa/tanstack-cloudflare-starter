@@ -11,8 +11,8 @@
     "deploy:dry-run": "dotenvx run -f .env.production -- alchemy plan --stage production",
     "deploy:staging": "dotenvx run -f .env.staging -- alchemy deploy --stage staging --yes",
     "destroy:staging": "dotenvx run -f .env.staging -- alchemy destroy --stage staging",
-    "check": "vp lint && vp fmt --check",
-    "check:fix": "vp lint --fix && vp fmt",
+    "check": "vp lint --format=agent && vp fmt --check",
+    "check:fix": "vp lint --fix --format=agent && vp fmt",
     "test": "vp test",
     "analyze:bundle": "vite-bundle-visualizer --sourcemap --template raw-data --output .tmp/bundle.json --open false"
   },
