@@ -17,6 +17,18 @@ assert.ok(core.ignorePatterns, "Ultracite core must provide ignorePatterns");
 
 export default defineConfig({
   resolve: { tsconfigPaths: true },
+  server: {
+    watch: {
+      // Ignore non-sources
+      ignored: [
+        "**/.direnv/**",
+        "**/.alchemy/**",
+        "**/.tmp/**",
+        "**/.fallow/**",
+        "**/dist/**",
+      ],
+    },
+  },
   plugins: [
     // Import lazily so lint and test skips them
     lazyPlugins(async () => {
