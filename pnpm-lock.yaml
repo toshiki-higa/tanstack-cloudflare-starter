@@ -112,10 +112,6 @@ catalogs:
       version: 26.6.2
 
 overrides:
-  '@effect/platform-node-shared': 4.0.0-rc.117
-  '@effect/sql-d1': 4.0.0-rc.117
-  '@effect/sql-sqlite-do': 4.0.0-rc.117
-  '@effect/vitest': 4.0.0-rc.117
   '@tanstack/query-core': 5.101.4
   vite: npm:@voidzero-dev/vite-plus-core@0.3.3
   vite-plugin-solid: 3.0.0-next.27
