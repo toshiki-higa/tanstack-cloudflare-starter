@@ -1,9 +1,6 @@
 import assert from "node:assert/strict";
 
-import solid from "@solidjs/vite-plugin";
-import tailwindcss from "@tailwindcss/vite";
 import router from "@tanstack/eslint-plugin-router";
-import { tanstackStart } from "@tanstack/solid-start/plugin/vite";
 import solidV2 from "eslint-plugin-solid/configs/v2";
 import ultraciteFmt from "ultracite/oxfmt";
 import antiSlop from "ultracite/oxlint/anti-slop";
@@ -21,16 +18,27 @@ assert.ok(core.ignorePatterns, "Ultracite core must provide ignorePatterns");
 export default defineConfig({
   resolve: { tsconfigPaths: true },
   plugins: [
-    tanstackStart({
-      importProtection: {
-        behavior: "error",
-        client: {
-          files: ["**/*.server.*", "**/server/**"],
-        },
-      },
+    // Build-only plugins are imported lazily so `vp lint` skips them entirely.
+    lazyPlugins(async () => {
+      const [{ tanstackStart }, { default: solid }, { default: tailwindcss }] =
+        await Promise.all([
+          import("@tanstack/solid-start/plugin/vite"),
+          import("@solidjs/vite-plugin"),
+          import("@tailwindcss/vite"),
+        ]);
+      return [
+        tanstackStart({
+          importProtection: {
+            behavior: "error",
+            client: {
+              files: ["**/*.server.*", "**/server/**"],
+            },
+          },
+        }),
+        solid({ ssr: true }),
+        tailwindcss(),
+      ];
     }),
-    tailwindcss(),
-    solid({ ssr: true }),
   ],
   build: {
     minify: true,
