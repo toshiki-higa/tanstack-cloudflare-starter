@@ -154,8 +154,9 @@ export default defineConfig({
   },
   fmt: ultraciteFmt,
   staged: {
-    "*.{js,ts,tsx}": ["vp check", "vp test related"],
+    "*.{js,ts,tsx}": ["vp lint --fix --format=agent", "vp test related"],
     "*": [
+      "vp fmt --no-error-on-unmatched-pattern",
       "secretlint --no-glob",
       "ls-lint",
       () => "fallow audit --base HEAD --format json --quiet",
